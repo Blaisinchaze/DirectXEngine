@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "App.h"
 #include <sstream>
 
 int CALLBACK WinMain(
@@ -9,36 +9,7 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		Window wnd(800, 300, "Doom2.0");
-		Window wnd2(300, 800, "Doom3.0");
-
-		//Message Pump
-		MSG msg;
-		BOOL gResult;
-		while ((gResult = GetMessage(&msg,nullptr,0,0)) > 0)
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-			while (!wnd.mouse.IsEmpty())
-			{
-				const auto e = wnd.mouse.Read();
-				if (e.GetType() == Mouse::Event::Type::Move)
-				{
-					std::ostringstream oss;
-					oss << "Mouse Position: (" << e.GetPosX() << "," << e.GetPosY() << ")";
-					wnd.SetTitle(oss.str());
-				}
-			}
-		}
-
-		if (gResult == -1)
-		{
-			return -1;
-		}
-		else
-		{
-			return msg.wParam;
-		}
+		return App{}.Go();
 	}
 	catch (const OurException& e)
 	{
